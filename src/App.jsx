@@ -2,11 +2,11 @@ import React from 'react';
 import {Routes, Route} from 'react-router-dom';
 import Layout from './components/public/Layout';
 import Public from './components/public/Public';
-import Login from './components/features/auth/Login';
+import Login from './features/auth/Login';
 import PrivateLayout from './components/private/PrivateLayout';
-import Welcome from './components/features/auth/Welcome';
-import NotesList from './components/features/notes/NotesList';
-import UsersList from './components/features/users/UsersList';
+import Welcome from './features/auth/Welcome';
+import NotesList from './features/notes/NotesList';
+import UsersList from './features/users/UsersList';
 
 const App = () => {
   return (
