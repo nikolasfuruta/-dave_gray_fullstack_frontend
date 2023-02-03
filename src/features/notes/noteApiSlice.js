@@ -10,7 +10,7 @@ export const noteApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     //here we define the CRUD methods
     getNote: builder.query({
-      query: () => '/note',
+      query: () => '/notes/username',
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError;
       },
