@@ -1,20 +1,22 @@
 import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice";
 
-const noteAdapter = createEntityAdapter({});//for use normalized datas
+const notesAdapter = createEntityAdapter({
+  sortComparer: (a,b) => (a.completed === b.completed ? 0 : a.completed ? 1 : -1)
+});//for use normalized datas
 
-const initialState = noteAdapter.getInitialState();
+const initialState = notesAdapter.getInitialState();
 
 //inject endpoint to the apiSlice
-export const noteApiSlice = apiSlice.injectEndpoints({
+export const notesApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     //here we define the CRUD methods
-    getNote: builder.query({
-      query: () => '/notes/username',
+    getNotes: builder.query({
+      query: () => '/notes',
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError;
       },
-      keepUnusedDataFor: 5,
+      //keepUnusedDataFor: 5,
       transformResponse: responseData => {
         const loadedNote = responseData.map(note => {
           //alter id format because we are using nosql
@@ -22,7 +24,7 @@ export const noteApiSlice = apiSlice.injectEndpoints({
           return note;
         });
         //set the modification
-        return noteAdapter.setAll(initialState, loadedNote)
+        return notesAdapter.setAll(initialState, loadedNote)
       },
       providesTags: (result, error, arg) => {
         if(result?.ids ) {
@@ -34,25 +36,60 @@ export const noteApiSlice = apiSlice.injectEndpoints({
         else  return [{ type: 'Note', id: 'LIST' }]
       }
     }),
+    addNewNote: builder.mutation({
+      query: initialNoteData => ({
+        url: '/notes',
+        method: 'POST',
+        body: { ...initialNoteData }
+      }),
+      invalidatesTags: [
+        { type: 'Note', id: 'LIST' }
+      ]
+    }),
+    updateNote: builder.mutation({
+      query: initialNoteData => ({
+        url: '/notes',
+        method: 'PATCH',
+        body: { ...initialNoteData }
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type:'Note', id: arg.id }
+      ]
+    }),
+    daleteNote: builder.mutation({
+      query: ({ id }) => ({
+        url: '/notes',
+        method: 'PDELETE',
+        body: { id }
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type:'Note', id: arg.id }
+      ]
+    })
   })
 });
 
 //custom hooks - crud
-export const { useGetNoteQuery } = noteApiSlice;
+export const {
+  useGetNotesQuery,
+  useAddNewNoteMutation,
+  useUpdateNoteMutation,
+  useDaleteNoteMutation
+} = notesApiSlice;
 
 //selectors - states
 //returns the query result obj
-export const selectNoteResult = noteApiSlice.endpoints.getNote.select();
+export const selectNotesResult = notesApiSlice.endpoints.getNotes.select();
 
 //creates memoized selector
-const selectNoteData = createSelector(
-  selectNoteResult,
+const selectNotesData = createSelector(
+  selectNotesResult,
   noteResult => noteResult.data //normalized state obj with ids & entities
 );
 
 //create selectors
 export const {
-  selectAll: selectAllNote,
+  selectAll: selectAllNotes,
   selectById: selectNoteById,
   selectIds: selectNoteIds
-} = noteAdapter.getSelectors(state => selectNoteData(state) ?? initialState);
+} = notesAdapter.getSelectors(state => selectNotesData(state) ?? initialState);

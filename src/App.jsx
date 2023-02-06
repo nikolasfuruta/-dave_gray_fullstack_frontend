@@ -7,6 +7,11 @@ import PrivateLayout from './components/private/PrivateLayout';
 import Welcome from './features/auth/Welcome';
 import NotesList from './features/notes/NotesList';
 import UsersList from './features/users/UsersList';
+import EditUser from './features/users/EditUser';
+import NewUserForm from './features/users/NewUserForm';
+import EditNote from './features/notes/EditNote';
+import NewNoteForm from './features/notes/NewNoteForm';
+import Prefetch from './features/auth/Prefetch';
 
 const App = () => {
   return (
@@ -18,19 +23,25 @@ const App = () => {
         {/*end public routes*/}
 
         {/*start protected routes*/}
-        <Route path='dash' element={ <PrivateLayout/> }>
-          <Route index element={ <Welcome/> }/>
-          {/*start notes routes*/}
-          <Route path='notes'>
-            <Route index element={ <NotesList/> }/>
-          </Route>
-          {/*end notes routes*/}
+        <Route element={ <Prefetch/> }>
+          <Route path='dash' element={ <PrivateLayout/> }>
+            <Route index element={ <Welcome/> }/>
+            {/*start notes routes*/}
+            <Route path='notes'>
+              <Route index element={ <NotesList/> }/>
+              <Route path=':id' element={ <EditNote/> }/>
+              <Route path='new' element={ <NewNoteForm/> }/>
+            </Route>
+            {/*end notes routes*/}
 
-          {/*start users routes*/}
-          <Route path='users'>
-            <Route index element={ <UsersList/> }/>
+            {/*start users routes*/}
+            <Route path='users'>
+              <Route index element={ <UsersList/> }/>
+              <Route path=':id' element={ <EditUser/> }/>
+              <Route path='new' element={ <NewUserForm/> }/>
+            </Route>
+            {/*end users routes*/}
           </Route>
-          {/*end users routes*/}
         </Route>
         {/*end protected routes*/}
       </Route>

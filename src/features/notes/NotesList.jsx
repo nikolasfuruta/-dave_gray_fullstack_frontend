@@ -1,5 +1,5 @@
 import React from 'react';
-import { useGetNoteQuery } from './noteApiSlice';
+import { useGetNotesQuery } from './noteApiSlice';
 import Note from './Note';
 
 const NotesList = () => {
@@ -9,7 +9,7 @@ const NotesList = () => {
     isSuccess,
     isError,
     error    
-	} = useGetNoteQuery();
+	} = useGetNotesQuery();
 
 	let content;
 	if (isLoading) content = <p>Loading...</p>;
