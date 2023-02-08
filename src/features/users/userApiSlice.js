@@ -22,6 +22,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
           return user;
         });
         //set the modification
+        console.log('fetch users')
         return usersAdapter.setAll(initialState, loadedUsers)
       },
       providesTags: (result, error, arg) => {

@@ -9,7 +9,11 @@ const UsersList = () => {
 		isSuccess,
 		isError,
 		error,
-	} = useGetUsersQuery();
+	} = useGetUsersQuery(undefined, {
+    pollingInterval: 60000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true
+  });
 
 	//define what render base on GET method response
   let content;

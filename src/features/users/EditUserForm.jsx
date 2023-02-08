@@ -63,6 +63,7 @@ const EditUserForm = ({ user }) => {
   }
   const onActiveChanged = () => setActive(prev => !prev)
   const onSaveUserClicked = async e => {
+    e.preventDefault();
     if(password) await updateUser({ id:user.id, username, password, roles, active });
     else await updateUser({ id:user.id, username, roles, active });
   }

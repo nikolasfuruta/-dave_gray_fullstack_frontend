@@ -10,7 +10,7 @@ import UsersList from './features/users/UsersList';
 import EditUser from './features/users/EditUser';
 import NewUserForm from './features/users/NewUserForm';
 import EditNote from './features/notes/EditNote';
-import NewNoteForm from './features/notes/NewNoteForm';
+import NewNote from './features/notes/NewNote';
 import Prefetch from './features/auth/Prefetch';
 
 const App = () => {
@@ -30,7 +30,7 @@ const App = () => {
             <Route path='notes'>
               <Route index element={ <NotesList/> }/>
               <Route path=':id' element={ <EditNote/> }/>
-              <Route path='new' element={ <NewNoteForm/> }/>
+              <Route path='new' element={ <NewNote/> }/>
             </Route>
             {/*end notes routes*/}
 
