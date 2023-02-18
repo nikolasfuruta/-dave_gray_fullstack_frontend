@@ -16,7 +16,7 @@ const NewNoteForm = ({ users }) => {
   }] = useAddNewNoteMutation();
 
   //states
-  const [userId, setUserId] = useState(users[0].id);
+  const [userId, setUserId] = useState('');//users[0].id
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
 
@@ -97,7 +97,7 @@ const NewNoteForm = ({ users }) => {
         {/* select user */}
         <label 
           className="form__lable form__checkbox-container" 
-          htmlFor='userNAME'
+          htmlFor='username'
         >
           ASSIGNED TO:
         </label>

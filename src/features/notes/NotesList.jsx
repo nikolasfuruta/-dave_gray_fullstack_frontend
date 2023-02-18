@@ -17,7 +17,9 @@ const NotesList = () => {
 
 	let content;
 	if (isLoading) content = <p>Loading...</p>;
-	if (isError) content = <p className='errmsg'>{error?.data?.message}</p>;
+	if (isError) {
+		content = <p className='errmsg'>{error?.data?.message}</p>;
+	}
 
 	if (isSuccess) {
 		const { ids } = notes;
@@ -49,7 +51,7 @@ const NotesList = () => {
 						</th>
 					</tr>
 				</thead>
-				<tbody>{tableContent}</tbody>
+				<tbody>{ tableContent }</tbody>
 			</table>
 		);
 		return content;
